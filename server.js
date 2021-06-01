@@ -22,7 +22,7 @@ const https = require('https')
 const options = {
   hostname: 'hooks.slack.com',
   port: 443,
-  path: 'reducted',
+  path: process.env.SLACK_URI_PATH,
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
