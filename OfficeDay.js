@@ -1,11 +1,19 @@
 class OfficeDay{
-    constructor(day,month){
-        this.day=day
-        this.month=month
+    /**
+     * @param {Date} date - The date
+     * @param {string[]} persons - The string
+     */
+    constructor(date,persons){
+        this.date=date.setHours(0, 0, 0, 0)
+        this.persons = persons
     }
 
-    toString(){
-        return `${this.day.toString()},${this.month.toString}`
+    asKey(){
+        return `${this.date.getUTCDay}-${this.date.getUTCMonth}`
+    }
+
+    addPerson(person){
+        this.persons.push(person);
     }
 }
 
