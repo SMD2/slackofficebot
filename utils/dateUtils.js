@@ -1,4 +1,4 @@
-const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
 /**
  * @param {string} dayOfWeekName - The date
@@ -6,7 +6,14 @@ const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
  */
 exports.dayOfWeekToDate = (dayOfWeekName, refDate)=>{
     var dayOfWeek = dayNames.indexOf(dayOfWeekName)
-    var today = new Date((refDate || new Date()).setHours(0, 0, 0, 0))
+    if (dayOfWeek==-1){
+        var date=new Date(dayOfWeek)
+        if (date && date.getDate()>0){
+            return date
+        }else{
+            return
+        }
+    }    var today = new Date((refDate || new Date()).setHours(0, 0, 0, 0))
     var todayDayOfWeek = today.getUTCDay();
     var delta
 
@@ -18,5 +25,6 @@ exports.dayOfWeekToDate = (dayOfWeekName, refDate)=>{
 
     return today.setDate(today.getDate()+delta)
 }
+
 
 

@@ -9,9 +9,17 @@ const options = {
     'Content-Type': 'application/json'
   }
 }
+const postMessageRequestModel={
+  text: ''
+}
 
-module.exports = function postMessage (body){
-    const req = https.request(options, res => {
+/**
+ * @param {string} message - The date
+ */
+exports.postMessage=(message) => {
+  let postMessageRequest = {...postMessageRequestModel}
+  postMessageRequest.text = message
+  const req = https.request(options, res => {
         console.debug(`postMessage recived statusCode: ${res.statusCode}`)
       
         res.on('data', d => {
@@ -23,6 +31,6 @@ module.exports = function postMessage (body){
         console.error(error)
       })
       
-      req.write(JSON.stringify(body))
+      req.write(JSON.stringify(postMessageRequest))
       req.end()
 }

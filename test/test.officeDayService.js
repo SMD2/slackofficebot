@@ -23,7 +23,7 @@ describe('officedayService', function() {
   });
   describe('#getPersons', function() {
     it('should return OfficeDay obj with 2 (1 and 3) persons', function() {
-      let retrived = officeDayService.getPersons(new OfficeDay(DATE))
+      let retrived = officeDayService.getOfficeDay(new OfficeDay(DATE))
       console.log(retrived)
       assert.deepStrictEqual(retrived,new OfficeDay(DATE,[PERSON_1,PERSON_3]))
     });

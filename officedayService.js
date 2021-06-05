@@ -22,19 +22,19 @@ exports.addPerson=(officeDay)=>{
         cache.set(officeDay.asKey(), officeDay)
     }
 
-    return true;
+    return officeDay;
 }
 
 /**
- * @param {OfficeDay} officeDay - The object
+ * @param {Date} date - The object
  */
-exports.getPersons=(officeDay)=>{
-    if (officeDay.date < new Date().setHours(0, 0, 0, 0)){
+exports.getOfficeDay=(date)=>{
+    if (date < new Date().setHours(0, 0, 0, 0)){
         console.error("date is in the past")
         return 
     }
 
-    return cachedOfficeDay=cache.get(officeDay.asKey());
+    return cache.get(new OfficeDay(date).asKey());
 }
 
 /**

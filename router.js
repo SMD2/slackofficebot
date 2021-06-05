@@ -1,48 +1,44 @@
 const express = require('express')
-const router = express.Router()
+const OfficeDay = require('./OfficeDay')
+const dateUtils = require ('./utils/dateUtils')
+const officeDayService = require ('./officedayService')
+const slackService = require('./slackService')
 
-const directives = [
-    {
-        name: "attending on",
-        function: addPersonToOfficeDayHandler
-    },
-    {
-        name: "cancle",
-        function: deletePersonToOfficeDayHandler
-    },
-    {
-        name: "who's attending on",
-        function: getPersonToOfficeDayHandler
-    }
-]
+var router = express.Router()
 
 router.use(function timeLog (req, res, next) {
     console.debug(new Date().toUTCString(),req.method,req.originalUrl, req.body.text, req.body.user_name)
     next()
 })
 
-router.post('/', function (req, res) {
-    let directiveName = req.body.text.toLowerCase()
-    
-    directives.forEach(directive=>{
-        console.log (directive.name, directiveName)
-        if (directiveName.search(directive.name)>=0){
-            directive.function(req,res)
-        }
-    })
+router.post('/attend', function (req, res) {
+    let cmd = req.body.text.toLowerCase().replaceAll(" ", "")
+    let date = new Date(dateUtils.dayOfWeekToDate(cmd))
+    if(!date)
+        res.status(400).send('Invalid day / date')
+    let officeDay = new OfficeDay(date,[req.body.user_name])
+    officeDay = officeDayService.addPerson(officeDay)
+    if (!officeDay){
+        console.error('ERROR: Can`t create oficeDay')
+        res.status(500).send('Internal server error')
+    }
+    let responseTest = `Also attending on ${officeDay.getPrintableDate()}:\n${officeDay.getPrintablePersons()}`
+    res.send(responseTest);
+    slackService.postMessage(`@${req.body.user_name} will attend at the office on ${officeDay.getPrintableDate()}`)
 })
 
-function addPersonToOfficeDayHandler(req,res){
-    
-}
-
-function deletePersonToOfficeDayHandler(req,res){
-    
-}
-
-function getPersonToOfficeDayHandler(req,res){
-    
-}
-
+router.post('/show', function (req, res){
+    let cmd = req.body.text.toLowerCase().replaceAll(" ", "")
+    let date = dateUtils.dayOfWeekToDate(cmd)
+    if(!date)
+        res.status(400).send('Invalid day / date')
+    let officeDay = officeDayService.getOfficeDay(date)
+    if (!officeDay){
+        res.send (`No one is YET attending the office on ${new Date(date).toDateString()}, you can be the first one!`)
+        return
+    }
+    let responseTest = `Attending on ${officeDay.getPrintableDate()}:\n${officeDay.getPrintablePersons()}`
+    res.send(responseTest)
+})
 
 module.exports = router
