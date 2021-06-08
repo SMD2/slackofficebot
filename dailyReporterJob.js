@@ -1,10 +1,11 @@
 const officeDayService = require ('./officedayService')
 const slackService = require ('./slackService')
 
-exports.dailyReporterJob=() => {
-    let officeDay = officeDayService.getOfficeDay(new Date())
+exports.run=() => {
+    let officeDay = officeDayService.getOfficeDay(new sDate().setHours(0, 0, 0, 0))
+    console.log(officeDay)
     if (officeDay){
-        slackService.postMessage(`Goog morning!\nSee who's coming to the office today:\n${officeDay.getPrintablePersons(true)}`)
+        slackService.postMessage(`Goog morning!:unicornrun:\nSee who's coming to the office today:\n${officeDay.getPrintablePersons(true)}`)
     }
-    console.debug('Daily report job: '+officeDay.getPrintablePersons())
+
 }

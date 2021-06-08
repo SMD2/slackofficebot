@@ -18,11 +18,11 @@ exports.addPerson=(officeDay)=>{
         }
         cachedOfficeDay.addPerson(officeDay.persons[0]) 
         cache.set(cachedOfficeDay.asKey(), cachedOfficeDay)
+        return cachedOfficeDay
     }else{
         cache.set(officeDay.asKey(), officeDay)
-    }
-
-    return officeDay;
+        return officeDay
+    }   
 }
 
 /**
@@ -33,7 +33,6 @@ exports.getOfficeDay=(date)=>{
         console.error("date is in the past")
         return 
     }
-
     return cache.get(new OfficeDay(date).asKey());
 }
 

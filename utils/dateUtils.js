@@ -7,7 +7,7 @@ const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'frida
 exports.dayOfWeekToDate = (dayOfWeekName, refDate)=>{
     var dayOfWeek = dayNames.indexOf(dayOfWeekName)
     if (dayOfWeek==-1){
-        var date=new Date(dayOfWeek)
+        var date=new Date(dayOfWeekName)
         if (date && date.getDate()>0){
             return date
         }else{
@@ -18,9 +18,9 @@ exports.dayOfWeekToDate = (dayOfWeekName, refDate)=>{
     var delta
 
     if (todayDayOfWeek<dayOfWeek){
-        delta = dayOfWeek-todayDayOfWeek-1
+        delta = dayOfWeek-todayDayOfWeek
     }else{
-        delta = (dayOfWeek+7)-todayDayOfWeek-1
+        delta = (dayOfWeek+7)-todayDayOfWeek
     }
 
     return today.setDate(today.getDate()+delta)

@@ -10,7 +10,8 @@ const options = {
   }
 }
 const postMessageRequestModel={
-  text: ''
+  text: '',
+  link_names: 1
 }
 
 /**
